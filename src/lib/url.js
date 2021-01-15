@@ -1,0 +1,1 @@
+export const GET_ALL_FILMS_URL = "https://andywiranata-42555.firebaseio.com/test-frontend/items.json";

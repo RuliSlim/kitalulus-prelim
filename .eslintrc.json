@@ -45,6 +45,7 @@
             "error", 
             { "max": 1, "maxEOF": 0 }
         ],
-        "ban-ts-ignore": 0
+        "ban-ts-ignore": 0,
+        "no-unused-vars": "off"
     }
 }

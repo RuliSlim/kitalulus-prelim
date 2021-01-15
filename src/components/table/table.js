@@ -32,9 +32,8 @@ function CreateBody({ data, isFilter }) {
 	const key = Object.keys(data[0]);
 	const col = `lg:grid-cols-${key.length + 2}`;
 
-	const handleClose = () => {
-		setHidden(false);
-	};
+	const handleClose = () => setHidden(true);
+	const handleModal = () => setHidden(false);
 
 	return (
 		<tbody className="w-full text-center">
@@ -62,7 +61,17 @@ function CreateBody({ data, isFilter }) {
 								<td td key={val} className={`${i === 0 ? "border-l-2" : ""} ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} truncate border-b-2 border-r-2 border-black border-opacity-10 px-4 py-2`}>
 									<CreateOption state={false} />
 								</td>
-								: <td key={val} className={`${i === 0 ? "border-l-2" : ""}  ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} truncate border-b-2 border-r-2 border-black border-opacity-10 py-2`}>{val}</td>
+								:
+								(i === 4)
+									?
+									<td key={val} className={`${i === 0 ? "border-l-2" : ""}  ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} truncate border-b-2 border-r-2 border-black border-opacity-10 py-2`}>
+										{val}
+										<MyButton handleClick={handleModal} type="iconTable" text={<i className="ri-information-fill text-xl"></i>}/>
+									</td>
+									:
+									<td key={val} className={`${i === 0 ? "border-l-2" : ""}  ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} truncate border-b-2 border-r-2 border-black border-opacity-10 py-2`}>
+										{val}
+									</td>
 					))}
 				</tr>
 			))}
