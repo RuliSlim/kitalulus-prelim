@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import MyButton from "../atoms/button";
+import { useDispatch } from "react-redux";
+import { closeModal, openModal } from "../../store/modal/action";
 
 export default function MyTable({ data, state }) {
 	return (
@@ -28,12 +30,24 @@ function CreateTitle({ data }) {
 }
 
 function CreateBody({ data, isFilter }) {
-	const [ hidden, setHidden ] = React.useState(true);
+	const dispatch = useDispatch();
 	const key = Object.keys(data[0]);
 	const col = `lg:grid-cols-${key.length + 2}`;
 
-	const handleClose = () => setHidden(true);
-	const handleModal = () => setHidden(false);
+	const handleClose = () => dispatch(closeModal());
+
+	const handleModal = (content) => () => {
+		const child = (
+			<div className="flex flex-col p-10 space-y-6">
+				<p>{content}</p>
+				<div className="flex flex-row">
+					<div className="flex-1"></div>
+					<button className="" onClick={handleClose}>closed</button>
+				</div>
+			</div>
+		);
+		dispatch(openModal(child));
+	};
 
 	return (
 		<tbody className="w-full text-center">
@@ -64,9 +78,9 @@ function CreateBody({ data, isFilter }) {
 								:
 								(i === 4)
 									?
-									<td key={val} className={`${i === 0 ? "border-l-2" : ""}  ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} truncate border-b-2 border-r-2 border-black border-opacity-10 py-2`}>
-										{val}
-										<MyButton handleClick={handleModal} type="iconTable" text={<i className="ri-information-fill text-xl"></i>}/>
+									<td key={val} className={`${i === 0 ? "border-l-2" : ""}  ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} flex flex-row border-b-2 border-r-2 border-black border-opacity-10 py-2`}>
+										<p className="truncate flex-1">{val}</p>
+										<MyButton handleClick={handleModal(val)} type="iconTable" text={<i className="ri-information-fill text-xl"></i>}/>
 									</td>
 									:
 									<td key={val} className={`${i === 0 ? "border-l-2" : ""}  ${i === key.length - 2 || i === 1 ? "col-span-2" : ""} truncate border-b-2 border-r-2 border-black border-opacity-10 py-2`}>
@@ -75,11 +89,6 @@ function CreateBody({ data, isFilter }) {
 					))}
 				</tr>
 			))}
-			<div className={`${hidden ? "hidden" : ""}`}>
-				<Modal handleClose={handleClose} >
-					<div>ini anaken</div>
-				</Modal>
-			</div>
 		</tbody>
 	);
 }
