@@ -1,4 +1,5 @@
 import React from "react";
+import MyButton from "../components/atoms/button";
 import MyTable from "../components/table/table";
 
 const dummyData = [
@@ -23,11 +24,23 @@ const dummyData = [
 ];
 export default function Home() {
 	const [ data, setData ] = React.useState(dummyData);
-	React.useEffect(() => {
-		const newData = [];
+	const [ isFilter, setIsFilter ] = React.useState(false);
+
+	const manipulateData = () => {
+		const newData = [
+			{
+				no: "",
+				title: "",
+				view: "",
+				genre: "",
+				description: "",
+				action: ""
+			}
+		];
+
 		data.forEach((el, i) => {
 			newData.push({
-				no: i,
+				no: (i + 1),
 				title: el.title,
 				view: el.views,
 				genre: el.genre,
@@ -36,8 +49,20 @@ export default function Home() {
 			});
 		});
 		setData(newData);
+	};
+
+	React.useEffect(() => {
+		manipulateData();
 	}, []);
+
+	const handleCLick = () => setIsFilter(!isFilter);
+
 	return (
-		<MyTable data={data} />
+		<div className="flex flex-col space-y-2">
+			<div>
+				<MyButton text="filter" type="normal" handleClick={handleCLick}/>
+			</div>
+			<MyTable data={data} state={isFilter}/>
+		</div>
 	);
 }
