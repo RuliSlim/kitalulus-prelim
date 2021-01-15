@@ -7,57 +7,11 @@ import { getAllFilms } from "../store/films/action";
 export default function Home() {
 	const { loading, isError, message, films, filterFilms, isFilter } = useSelector(state => state.films );
 	const dispatch = useDispatch();
-	const [ data, setData ] = React.useState(films);
 	const [ filter, setFilter ] = React.useState(false);
-	// const [ data, ]
-
-	const manipulateData = () => {
-		const newData = [
-			{
-				no: "",
-				title: "",
-				view: "",
-				genre: "",
-				description: "",
-				action: ""
-			}
-		];
-
-		if (isFilter) {
-			filterFilms.forEach((el, i) => {
-				newData.push({
-					no: i + 1,
-					title: el.title,
-					view: el.views,
-					genre: el.genre,
-					description: el.descriptions,
-					action: ""
-				});
-			});
-		} else {
-			console.log(films, "ini films<<<<<<");
-			films.forEach((el, i) => {
-				newData.push({
-					no: i + 1,
-					title: el.title,
-					view: el.views,
-					genre: el.genre,
-					description: el.descriptions,
-					action: ""
-				});
-			});
-		}
-		console.log(newData, "<<<<<<<Fsafsa");
-		setData(newData);
-	};
 
 	React.useEffect(() => {
 		dispatch(getAllFilms());
 	}, [ ]);
-
-	React.useEffect(() => {
-		manipulateData();
-	}, [ films, filterFilms, isFilter ]);
 
 	const handleCLick = () => setFilter(!filter);
 
@@ -69,7 +23,7 @@ export default function Home() {
 			{
 				loading
 					? <div>Loading....</div>
-					: <MyTable data={data} state={filter}/>
+					: <MyTable data={isFilter ? filterFilms : films} state={filter}/>
 			}
 		</div>
 	);
