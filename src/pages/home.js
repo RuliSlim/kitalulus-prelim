@@ -5,25 +5,49 @@ import MyTable from "../components/table/table";
 import { getAllFilms } from "../store/films/action";
 
 export default function Home() {
-	const { loading, isError, message, films } = useSelector(state => state.films );
+	const { loading, isError, message, films, filterFilms, isFilter } = useSelector(state => state.films );
 	const dispatch = useDispatch();
 	const [ data, setData ] = React.useState(films);
-	const [ isFilter, setIsFilter ] = React.useState(false);
+	const [ filter, setFilter ] = React.useState(false);
 	// const [ data, ]
 
 	const manipulateData = () => {
-		const newData = [];
-
-		films.forEach((el, i) => {
-			newData.push({
-				no: i === 0 ? "" : i,
-				title: el.title,
-				view: el.views,
-				genre: el.genre,
-				description: el.descriptions,
+		const newData = [
+			{
+				no: "",
+				title: "",
+				view: "",
+				genre: "",
+				description: "",
 				action: ""
+			}
+		];
+
+		if (isFilter) {
+			filterFilms.forEach((el, i) => {
+				newData.push({
+					no: i + 1,
+					title: el.title,
+					view: el.views,
+					genre: el.genre,
+					description: el.descriptions,
+					action: ""
+				});
 			});
-		});
+		} else {
+			console.log(films, "ini films<<<<<<");
+			films.forEach((el, i) => {
+				newData.push({
+					no: i + 1,
+					title: el.title,
+					view: el.views,
+					genre: el.genre,
+					description: el.descriptions,
+					action: ""
+				});
+			});
+		}
+		console.log(newData, "<<<<<<<Fsafsa");
 		setData(newData);
 	};
 
@@ -33,9 +57,9 @@ export default function Home() {
 
 	React.useEffect(() => {
 		manipulateData();
-	}, [ films ]);
+	}, [ films, filterFilms, isFilter ]);
 
-	const handleCLick = () => setIsFilter(!isFilter);
+	const handleCLick = () => setFilter(!filter);
 
 	return (
 		<div className="flex flex-col space-y-2">
@@ -45,7 +69,7 @@ export default function Home() {
 			{
 				loading
 					? <div>Loading....</div>
-					: <MyTable data={data} state={isFilter}/>
+					: <MyTable data={data} state={filter}/>
 			}
 		</div>
 	);

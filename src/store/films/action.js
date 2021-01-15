@@ -1,5 +1,5 @@
 import { GET_ALL_FILMS_URL } from "../../lib/url";
-import { GET_ALL_FILMS, SET_FAIL, SET_LOADING } from "./type";
+import { FILTER_FILMS, FILTER_GENRE, GET_ALL_FILMS, SET_FAIL, SET_LOADING } from "./type";
 
 export const getAllFilms = () => {
 	const action = {
@@ -7,6 +7,13 @@ export const getAllFilms = () => {
 	};
 
 	return callApi(action);
+};
+
+export const filterFilms = (film, type) => (dispatch) => {
+	dispatch({
+		type: type === "film" ? FILTER_FILMS : FILTER_GENRE,
+		payload: film
+	});
 };
 
 const callApi = (action) => async (dispatch) => {

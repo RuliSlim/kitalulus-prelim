@@ -6,8 +6,8 @@ import Home from "./pages/home";
 function App() {
 	const { isOpen, children } = useSelector(state => state.modal);
 	return (
-		<div className="h-screen w-screen">
-			<div className="absolute top-1/2 left-1/3 transform -translate-x-1/3	-translate-y-1/2">
+		<div className="h-screen w-screen container m-auto py-10">
+			<div className="">
 				<Home />
 			</div>
 			<div className={`${isOpen ? "" : "hidden"}`}>
