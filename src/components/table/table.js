@@ -102,9 +102,11 @@ function CreateBodySimple({ data, isFilter, id, length }) {
 					}
 				</td>
 				<td className={`${id === length ? "border-b-4" : ""} border-r-4 border-opacity-100 border-black max-w-md max-h-xs truncate col-span-2`}>
-					<div className="float-right">
-						<MyButton handleClick={handleModal(data.description)} type="iconTable" text={<i className="ri-information-fill text-xl"></i>}/>
-					</div>
+					{ id !== 0 &&
+						<div className="float-right">
+							<MyButton handleClick={handleModal(data.description)} type="iconTable" text={<i className="ri-information-fill text-xl"></i>}/>
+						</div>
+					}
 					{
 						editing
 							? <input type="text" className="flex-1 border-2 border-black w-full" value={data.description} onChange={handleChange(id, "description")}/>
