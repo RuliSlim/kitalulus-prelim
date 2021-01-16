@@ -23,7 +23,7 @@ export default function MyTable({ data, state }) {
 
 function CreateTitle({ data }) {
 	const key = Object.keys(data);
-	const col = `lg:grid-cols-${key.length + 3}`;
+	const col = "lg:grid-cols-9";
 
 	return (
 		<thead className="w-full text-center">
