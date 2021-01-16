@@ -31,23 +31,31 @@ export const filmReducer = (state = initialState, action) => {
 	case FILTER_FILMS: {
 		const filter = state.films.filter((el) => el.title.toLowerCase().includes(action.payload.toLowerCase()));
 		if (action.payload) {
-			return { ...state, isFilter: true, filterFilms: structFilms(filter) };
+			return { ...state, isFilter: true, filterFilms: structFilms(filter, "filter") };
 		}
 		return { ...state, isFilter: false };
 	}
 	case FILTER_GENRE: {
 		const filter = state.films.filter((el) => el.genre.toLowerCase().includes(action.payload.toLowerCase()));
-		// if (action.payload) {
-		return { ...state, isFilter: true, filterFilms: structFilms(filter) };
-		// }
-		// return { ...state, isFilter: true, filterFilms: state.films };
+		return { ...state, isFilter: true, filterFilms: structFilms(filter, "filter") };
 	}
 	case ONCHANGE_FILM: {
-		const newFilms = state.films;
+		const initialFilm = state.films;
+		const newFilms = state.isFilter ? state.filterFilms : state.films;
+
+		const editingFilms = newFilms[action.payload.index];
 		newFilms[action.payload.index] = {
 			...newFilms[action.payload.index],
 			[action.payload.el]: action.payload.value
 		};
+
+		const findId = state.films.findIndex((el) => el.title === editingFilms.title || el.view === editingFilms.view || el.description === editingFilms.description || el.genre === editingFilms.genre );
+		initialFilm[findId] = {
+			...initialFilm[findId],
+			[action.payload.el]: action.payload.value
+		};
+
+		if (state.isFilter) return { ...state, filterFilms: [ ...newFilms ], films: [ ...initialFilm ] };
 		return { ...state, films: [ ...newFilms ] };
 	}
 	case ONSAVE_FILM:
@@ -57,8 +65,7 @@ export const filmReducer = (state = initialState, action) => {
 	return state;
 };
 
-function structFilms (films) {
-	console.log("masuk sini gagaa???", films);
+function structFilms (films, type) {
 	const newData = [
 		{
 			no: "",
@@ -70,16 +77,29 @@ function structFilms (films) {
 		}
 	];
 
-	films.forEach((el, i) => {
-		newData.push({
-			no: i + 1,
-			title: el.title,
-			view: el.views,
-			genre: el.genre,
-			description: el.descriptions,
-			action: ""
+	if (type === "filter") {
+		films.forEach((el, i) => {
+			newData.push({
+				no: i + 1,
+				title: el.title,
+				view: el.view,
+				genre: el.genre,
+				description: el.description,
+				action: ""
+			});
 		});
-	});
+	} else {
+		films.forEach((el, i) => {
+			newData.push({
+				no: i + 1,
+				title: el.title,
+				view: el.views,
+				genre: el.genre,
+				description: el.descriptions,
+				action: ""
+			});
+		});
+	}
 
 	return newData;
 }

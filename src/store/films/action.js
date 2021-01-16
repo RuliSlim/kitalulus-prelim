@@ -21,19 +21,20 @@ export const onChangeFilm = (value, index, el) => (dispatch) => {
 		type: ONCHANGE_FILM,
 		payload: {
 			value,
-			index: index,
+			index,
 			el
 		}
 	});
 };
 
-export const updateFilm = (element, index) => {
+export const updateFilm = (element, index, intialFilm) => {
 	const action = {
 		type: ONSAVE_FILM
 	};
 
-	console.log(element, index, "<<<<<<<FSAFA");
-	return callApi(action, element, index);
+	const findId = intialFilm.findIndex((el) => el.title === element.title || el.view === element.view || el.description === element.description || el.genre === element.genre );
+
+	return callApi(action, element, findId - 1);
 };
 
 const callApi = (action, type = undefined, index = undefined) => async (dispatch) => {
@@ -42,13 +43,12 @@ const callApi = (action, type = undefined, index = undefined) => async (dispatch
 			type: SET_LOADING
 		});
 
-		console.log("masuk sini loooh", type, index);
-		if (type && index !== undefined) {
+		if (action.type === ONSAVE_FILM) {
 			const data = {
 				title: type.title,
 				views: type.view,
 				genre: type.genre,
-				descriptions: type.descriptions
+				descriptions: type.description
 			};
 
 			const response = await fetch(SAVE_FILM_URL(index), {
@@ -60,7 +60,6 @@ const callApi = (action, type = undefined, index = undefined) => async (dispatch
 				body: JSON.stringify(data),
 			});
 
-			console.log(response, "ini response nyaaa<<<<<");
 			dispatch({
 				type: action.type
 			});
