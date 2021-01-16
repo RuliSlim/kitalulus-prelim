@@ -23,11 +23,11 @@ export default function MyTable({ data, state }) {
 
 function CreateTitle({ data }) {
 	const key = Object.keys(data);
-	const col = "lg:grid-cols-9";
+	const col = "grid-cols-9";
 
 	return (
 		<thead className="w-full text-center">
-			<tr className={`lg:grid ${col} w-full bg-gray-400`}>
+			<tr className={`grid ${col} w-full bg-gray-400`}>
 				{key.map((el, i) => <th className={`${i === 0 ? "border-l-4" : ""} ${i === key.length - 2 || i === key.length-3 || i === 1 ? "col-span-2" : ""}  py-4 border-t-4 border-r-4 border-black border-opacity-100`} key={el}>{el}</th>)}
 			</tr>
 		</thead>
